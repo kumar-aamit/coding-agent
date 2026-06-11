@@ -1,11 +1,8 @@
-# Setup Application
+# Dummy Application
 
-This dummy app demonstrates OpenCode integration with dev-coding-agent.
+This dummy app demonstrates integration between dev-coding-agent and OpenCode.
 
-## Purpose
-Minimal example for testing dev-coding-agent workflows.
-
-## Structure
+## Project Structure
 - `src/` - Source code
 - `README.md` - Documentation
 - `main.py` - Entry script
@@ -13,12 +10,5 @@ Minimal example for testing dev-coding-agent workflows.
 - `.opencode/config` - OpenCode config
 
 ## Usage
-1. Install: `pip install -r requirements.txt`
-2. Run: `python main.py`
-3. Expected: "Hello from Dummy App!"
-
-## Skills Used
-- dev-coding-agent
-- OpenCode integration
-- Git
-- Package management
+1. Run: `python main.py`
+2. Expected output: "Hello from Dummy App!"

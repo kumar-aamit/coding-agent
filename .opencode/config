@@ -1,0 +1,4 @@
+[opencode]
+endpoint=https://api.opencode.example.com
+version=1.0
+debug=true
