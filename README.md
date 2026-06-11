@@ -45,7 +45,8 @@ For development with hot-reloading:
 Run tests with:
   ```bash
   npm test
-  ```dummy
+  ```
+
 # Dummy App
 
 ## Setup
