@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./backend:/app/backend
+  web:
+    image: python:3.11-slim
+    command: python -m http.server 8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend:/usr/src/web
+    working_dir: /usr/src/web

@@ -1,0 +1,1 @@
+Checkin local setup complete. Next steps: create tests, CI workflow, Dockerfile

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clinic Wait Times Board</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Clinic Wait Times</h1>
+    <div id="board">
+        <h2>Queue</h2>
+        <table>
+            <thead><tr><th>Patient</th><th>Check‑in</th><th>Wait (s)</th></tr></thead>
+            <tbody id="queueRows"></tbody>
+        </table>
+    </div>
+
+    <button id="simulateCheckIn">Simulate Patient Check‑In</button>
+
+    <script src="app.js"></script>
+</body>
+</html>

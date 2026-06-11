@@ -1,0 +1,8 @@
+body { font-family: Arial, sans-serif; margin: 20px; }
+#board { margin-top: 20px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+th { background-color: #f5f5f5; }
+tr:nth-child(even) { background-color: #fafafa; }
+.longest-wait { background-color: #ffcccc; }
+button { padding: 10px 15px; font-size: 1rem; }
