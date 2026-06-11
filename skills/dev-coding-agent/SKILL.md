@@ -8,6 +8,11 @@ metadata:
     "version": "1.0.0"
   }
 ---
+## OpenClaw gateway exec (required)
+
+- host MUST be "gateway" (never node, sandbox, auto)
+- NEVER pass env.HOME or env.PATH
+- Use: exec with workdir + absolute opencode path
 
 # Development Coding Agent
 
