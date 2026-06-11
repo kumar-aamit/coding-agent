@@ -1,58 +1,24 @@
-# Setup
+# Setup Application
 
-This project contains setup steps for the OpenCode development environment. Follow these steps to configure and run the project.
+This dummy app demonstrates OpenCode integration with dev-coding-agent.
 
-## Prerequisites
-- Node.js v18 or higher
-- Git
-- OpenCode CLI
+## Purpose
+Minimal example for testing dev-coding-agent workflows.
 
-## Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/openclaw/coding-agent.git
-   cd coding-agent
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Configure environment variables:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your preferred settings
-   ```
-
-4. Build the project:
-   ```bash
-   npm run build
-   ```
+## Structure
+- `src/` - Source code
+- `README.md` - Documentation
+- `main.py` - Entry script
+- `requirements.txt` - Dependencies
+- `.opencode/config` - OpenCode config
 
 ## Usage
-Run the application with:
-  ```bash
-  npm start
-  ```
+1. Install: `pip install -r requirements.txt`
+2. Run: `python main.py`
+3. Expected: "Hello from Dummy App!"
 
-For development with hot-reloading:
-  ```bash
-  npm run dev
-  ```
-
-## Testing
-Run tests with:
-  ```bash
-  npm test
-  ```
-
-# Dummy App
-
-## Setup
-
-1. Install dependencies:
-   pip install -r requirements.txt
-2. Run the app:
-   python main.py
-3. Expected output: 'Hello from Dummy App!'
+## Skills Used
+- dev-coding-agent
+- OpenCode integration
+- Git
+- Package management
