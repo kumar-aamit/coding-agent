@@ -1,0 +1,9 @@
+Welcome to the Simple Chat Bot!  
+This bot echoes back any message you send to its `/chat` endpoint.  
+Deploy with `docker-compose up -d` and test with:  
+
+```bash  
+curl -X POST http://localhost:5000/chat -H "Content-Type: application/json" -d '{"message":"Hello!"}'  
+```  
+
+Response: `{"reply":"You said: Hello!"}`
