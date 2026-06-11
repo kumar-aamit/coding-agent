@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "dev-coding-agent": {
+      "version": "1.0.0",
+      "installedAt": 1781144370564,
+      "registry": "https://clawhub.ai"
+    }
+  }
+}
