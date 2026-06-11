@@ -17,6 +17,14 @@ Minimal example for testing dev-coding-agent workflows.
 2. Run: `python main.py`
 3. Expected: "Hello from Dummy App!"
 
+## Setup
+
+To set up the project:
+
+1. Create a virtual environment: `python -m venv venv`
+2. Install Flask: `pip install flask`
+3. Run the bot: `python bot.py`
+
 ## Skills Used
 - dev-coding-agent
 - OpenCode integration
