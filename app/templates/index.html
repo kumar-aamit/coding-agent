@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Downtime Ticket Tracker</title>
-</head>
-<body>
-    <h1>Downtime Ticket Tracker</h1>
-    <p>Status: {{ status }}</p>
-    <p>Hello, world!</p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <h2>Welcome to Inventory Tracker</h2>
+    <p>This is a simple inventory management application built with FastAPI, Jinja2, and SQLite.</p>
+    <p>Use the API endpoints to manage spare parts and get low-stock reorder suggestions.</p>
+{% endblock %}

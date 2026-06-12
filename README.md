@@ -1,33 +1,33 @@
-# Downtime Ticket Tracker
+# Inventory Tracker
 
-A FastAPI-based ticket tracker for monitoring machine downtime on the factory floor.
-
-## Tech Stack
-
-- **FastAPI** - Web framework
-- **Jinja2** - Templating engine
-- **SQLite** - Local database
-- **vLLM** - Language model for ticket summary & next steps (http://127.0.0.1:8000/v1)
+A simple inventory management web application built with FastAPI, Jinja2, and SQLite. It tracks spare parts (part number, quantity, location) and uses an LLM via vLLM at http://127.0.0.1:8000/v1 to suggest reorder actions for low-stock items.
 
 ## Features
 
-- Health check endpoint: `GET /health`
-- SQLite-backed ticket storage
-- Jinja2 templates for UI
-- Integration with vLLM for automated summaries & recommendations
+- Add, view, update, and delete parts
+- Health check endpoint at `/health`
+- Low-stock detection and LLM-powered reorder suggestions
+- Docker support with `docker-compose`
 
-## Getting Started
+## Quick Start
 
-1. Install dependencies: `pip install -r requirements.txt`
-2. Run the app: `uvicorn app.main:app --reload`
-3. Access the app at `http://localhost:8000`
-4. Use `docker-compose up --build` for containerized deployment
+```bash
+# Install dependencies
+pip install -r requirements.txt
 
-## Usage
+# Run the app
+uvicorn app.main:app --reload
+
+# Or using Docker Compose
+docker-compose up --build
+```
+
+## Endpoints
 
 - `GET /health` - Health check
-- (Additional endpoints will be implemented for ticket creation, summary, and next steps.)
-
-## License
-
-MIT
+- `GET /parts` - List all parts
+- `POST /parts` - Create a new part
+- `GET /parts/{id}` - Get part details
+- `PUT /parts/{id}` - Update a part
+- `DELETE /parts/{id}` - Delete a part
+- `GET /parts/low-stock` - Get low-stock parts and reorder suggestions

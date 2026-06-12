@@ -1,9 +1,10 @@
-version: "3.9"
+version: "3.8"
 services:
-  downtime-app:
+  web:
     build: .
     ports:
       - "80:80"
-    restart: unless-stopped
+    volumes:
+      - .:/app
     environment:
-      - DATABASE_URL=sqlite:///./tickets.db
+      - ENV=production
