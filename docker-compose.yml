@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  chatbot:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - VLLM_BASE_URL=http://127.0.0.1:8080/v1
+      - VLLM_MODEL=nvidia/nemotron-3-nano
+    restart: unless-stopped
