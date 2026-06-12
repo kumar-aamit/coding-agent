@@ -1,37 +1,81 @@
-# coding-agent
+# Machine Downtime Log
 
-A minimal FastAPI application that serves as a chat interface to vLLM models.
+A field services ticket tracker for manufacturing floor machine stoppages. This application allows operators to log downtime events and automatically generates summaries using a local vLLM model.
 
 ## Features
 
-- FastAPI web server exposing REST endpoints
-- Integration with vLLM for model inference at http://127.0.0.1:8080/v1
-- Docker support with docker-compose.yml
-- Health check endpoint at /health
+- Log machine stoppages with machine ID, line/area, reason, description, severity, and operator
+- Automatic AI-powered summaries using local vLLM model
+- Status tracking (open/in-progress/resolved) with resolution notes
+- Search and filter capabilities
+- Docker containerization for easy deployment
 
-## Getting Started
+## Prerequisites
 
-1. Configure vLLM server at the specified endpoint
-2. Run the application
-3. Access the API at the root endpoint
+- Docker and Docker Compose
+- A running vLLM model on port 8000 (accessible at http://localhost:8000/v1)
+- Python 3.11+ (for development)
 
-## Endpoints
+## Setup
 
-- `GET /`: Root endpoint returning basic service status
-- `GET /health`: Health check endpoint that verifies connection to vLLM
+### Development Setup
+
+1. Create a virtual environment:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # Linux/Mac
+   .venv\Scripts\activate    # Windows
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Run the application:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+4. Access the application at http://localhost:8080
+
+### Docker Setup
+
+1. Build and run the application:
+   ```bash
+   docker-compose up --build
+   ```
+
+2. The application will be available at http://localhost:8080
+
+3. To stop:
+   ```bash
+   docker-compose down
+   ```
 
 ## Configuration
 
-The application expects the vLLM API to be running at `http://127.0.0.1:8080/v1` with model `nvidia/nemotron-3-nano` specified.
+All configuration is done through environment variables in `.env.example`. Copy this file to `.env` and modify as needed.
 
-## Development
+## API Endpoints
 
-Requires Python 3.11+, FastAPI, uvicorn, and vllm packages.
+- `POST /api/tickets` - Create a new downtime ticket
+- `GET /api/tickets` - Get all tickets
+- `GET /api/tickets/{id}` - Get a specific ticket by ID
+- `GET /health` - Health check endpoint
 
-## Docker
+## Environment Variables
 
-The application can be built and run using Docker or docker-compose.
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DATABASE_URL` | Database connection string | `sqlite:///./data/downtime.db` |
+| `VLLM_BASE_URL` | Base URL for vLLM API | `http://localhost:8000/v1` |
+| `VLLM_MODEL` | Model name to use | `nemotron-3-nano` |
+| `APP_HOST` | Application host | `0.0.0.0` |
+| `APP_PORT` | Application port | `8080` |
 
-## License
+## Notes
 
-This project is licensed under the MIT License.
+- The application will run even if the vLLM model is not available (will show a message instead of summary)
+- Data is stored in the `data/` directory as SQLite database
+- In production, you may want to configure a more robust database

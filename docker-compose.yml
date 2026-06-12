@@ -1,11 +1,24 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  chatbot:
+  downtime-app:
     build: .
     ports:
       - "8080:8080"
+    volumes:
+      - ./data:/app/data
+      - ./app/data:/app/data
+    env_file:
+      - .env.example
     environment:
-      - VLLM_BASE_URL=http://127.0.0.1:8080/v1
-      - VLLM_MODEL=nvidia/nemotron-3-nano
-    restart: unless-stopped
+      - VLLM_BASE_URL=http://host.docker.internal:8000/v1
+    extra_hosts:
+      - "host.docker.internal:127.0.0.1"
+
+  # Note: vLLM service is expected to be running externally
+  # This app assumes vLLM is already running on the host machine
+
+# Network configuration
+networks:
+  default:
+    name: downtime-network

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Downtime Log</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .ticket-form { background: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 8px; }
+        button { padding: 10px 15px; background: #0078d4; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #005a9e; }
+        #llm-summary { background: #e9ecef; padding: 10px; border-radius: 4px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Machine Downtime Log</h1>
+        <div class="ticket-form">
+            <form id="ticketForm">
+                <div class="form-group">
+                    <label for="machine_id">Machine ID:</label>
+                    <input type="text" id="machine_id" name="machine_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="line_area">Line/Area:</label>
+                    <input type="text" id="line_area" name="line_area" required>
+                </div>
+                <div class="form-group">
+                    <label for="stop_reason_category">Stop Reason Category:</label>
+                    <input type="text" id="stop_reason_category" name="stop_reason_category" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="severity">Severity:</label>
+                    <select id="severity" name="severity">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="operator_name">Operator Name:</label>
+                    <input type="text" id="operator_name" name="operator_name">
+                </div>
+                <button type="submit">Log Downtime</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('ticketForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                machine_id: formData.get('machine_id'),
+                line_area: formData.get('line_area'),
+                stop_reason_category: formData.get('stop_reason_category'),
+                description: formData.get('description'),
+                severity: formData.get('severity'),
+                operator_name: formData.get('operator_name')
+            };
+            
+            const response = await fetch('/api/tickets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(data).toString()
+            });
+            
+            const result = await response.json();
+            console.log('Ticket created:', result);
+            
+            // Display summary in the UI
+            const summaryDiv = document.createElement('div');
+            summaryDiv.id = 'llm-summary';
+            summaryDiv.textContent = 'Summary: ' + result.summary;
+            document.querySelector('.container').appendChild(summaryDiv);
+        });
+    </script>
+</body>
+</html>
+</body>
+</html>
+</html>

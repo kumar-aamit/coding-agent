@@ -1,0 +1,32 @@
+# Python files to ignore
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+.venv/
+env/
+
+# Database files
+*.db
+data/*.db
+
+# Environment variables
+.env
+
+# Logs and cache
+*.log
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter notebooks
+.ipynb_checkpoints
+
+# FastAPI specific
+*.swp
+*.swo
