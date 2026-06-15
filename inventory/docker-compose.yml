@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  inventory:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./inventory.db:/app/inventory.db
+    environment:
+      - PYTHONUNBUFFERED=1
