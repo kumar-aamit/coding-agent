@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
 #
-# VM one-shot: create git branch + health app placeholder files + OpenCode build config.
+# VM one-shot: orphan git branch + health app placeholder files + OpenCode build config.
+#
+# Creates a fresh branch with no parent history:
+#   git checkout --orphan health-bot
+# then writes scaffold files and makes the initial commit.
 #
 # Usage (on OpenClaw VM):
-#   chmod +x scripts/vm-scaffold-health-app.sh
+#   cd /home/dcloud/openclaw/workspace/coding-agent
 #   ./scripts/vm-scaffold-health-app.sh
 #
-# Or without cloning first:
+# Or pipe from GitHub:
 #   curl -fsSL https://raw.githubusercontent.com/kumar-aamit/coding-agent/health-bot/scripts/vm-scaffold-health-app.sh | bash
 #
 # Env overrides:
 #   WORKDIR=/home/dcloud/openclaw/workspace/coding-agent
 #   BRANCH=health-bot
+#   FORCE_RECREATE=1          # delete existing branch and recreate orphan
+#   CLEAN_UNTRACKED=1         # remove non-git files before scaffold (default 1)
 #   SKIP_OPENCODE_GLOBAL=1    # skip ~/.config/opencode/opencode.json patch
 #   SKIP_GIT_COMMIT=1         # write files only, no commit
 
@@ -41,19 +47,31 @@ cd "$WORKDIR"
 log "Workdir: $WORKDIR"
 log "Branch:  $BRANCH"
 
-# --- git branch ---
+# --- orphan branch (no history from main) ---
 if git show-ref --verify --quiet "refs/heads/$BRANCH"; then
-  log "Branch $BRANCH exists — checking out"
-  git checkout "$BRANCH"
-else
-  CURRENT="$(git branch --show-current || true)"
-  if [[ -n "$CURRENT" ]]; then
-    git checkout -b "$BRANCH"
+  if [[ "${FORCE_RECREATE:-0}" == "1" ]]; then
+    CURRENT="$(git branch --show-current || true)"
+    if [[ "$CURRENT" == "$BRANCH" ]]; then
+      git checkout main 2>/dev/null || git checkout master 2>/dev/null || git checkout --detach HEAD~0 2>/dev/null || true
+    fi
+    git branch -D "$BRANCH"
+    ok "Deleted existing branch $BRANCH"
   else
-    git checkout -b "$BRANCH"
+    die "Branch $BRANCH already exists. Checkout it, or rerun with FORCE_RECREATE=1"
   fi
-  ok "Created branch $BRANCH"
 fi
+
+log "Creating orphan branch: git checkout --orphan $BRANCH"
+git checkout --orphan "$BRANCH"
+
+log "Clearing previous branch files from index and worktree"
+git rm -rf . 2>/dev/null || true
+
+if [[ "${CLEAN_UNTRACKED:-1}" == "1" ]]; then
+  find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+fi
+
+ok "Orphan branch $BRANCH ready (empty tree)"
 
 # --- placeholder files ---
 log "Writing scaffold files..."
@@ -278,18 +296,28 @@ cat > opencode.json <<'EOF'
 }
 EOF
 
+cat > .gitignore <<'EOF'
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+health.db
+.env
+.DS_Store
+EOF
+
 ok "Scaffold files written"
 
-ls -la database.py models.py schemas.py llm_client.py main.py requirements.txt HEALTH_APP.md opencode.json
+ls -la database.py models.py schemas.py llm_client.py main.py requirements.txt HEALTH_APP.md opencode.json .gitignore
 
 # --- git commit ---
 if [[ "${SKIP_GIT_COMMIT:-0}" != "1" ]]; then
-  git add database.py models.py schemas.py llm_client.py main.py requirements.txt HEALTH_APP.md opencode.json
+  git add database.py models.py schemas.py llm_client.py main.py requirements.txt HEALTH_APP.md opencode.json .gitignore
   if git diff --cached --quiet; then
     warn "No changes to commit (files unchanged)"
   else
-    git commit -m "scaffold: health app placeholders on branch ${BRANCH}"
-    ok "Committed on $(git branch --show-current): $(git log -1 --oneline)"
+    git commit -m "Initial commit: health app scaffold (orphan branch ${BRANCH})"
+    ok "Initial commit on orphan branch $(git branch --show-current): $(git log -1 --oneline)"
   fi
 fi
 
@@ -319,8 +347,9 @@ fi
 cat <<EOF
 
 ══════════════════════════════════════════════════════════════
-  Scaffold ready on branch: ${BRANCH}
+  Scaffold ready — orphan branch: ${BRANCH}
   Workdir: ${WORKDIR}
+  (no parent history from main)
 ══════════════════════════════════════════════════════════════
 
 1) Optional — restart gateway after OpenCode config change:
